@@ -1,0 +1,19 @@
+<div class="login">
+  <div class="login-triangle"></div>
+
+  <h2 class="login-header">{{action}}</h2>
+
+  <form [formGroup]="baseForm" (ngSubmit)="submitForm(baseForm.value)" class="login-container">
+    <p><input type="text" placeholder="User" [formControl]="baseForm.controls['UserName']"></p>
+    <p>
+      <input type="password" placeholder="Password" [formControl]="baseForm.controls['PassWord']">
+      <i class="glyphicon glyphicon-eye-open form-control-feedback"></i>
+    </p>
+    <ng-container *ngIf="isLogin;else register">
+      <p><input type="submit" value="Login" [disabled]="!baseForm.valid"></p>
+    </ng-container>
+    <ng-template #register>
+      <p><input type="submit" value="Sign up" [disabled]="!baseForm.valid"></p>
+    </ng-template>
+  </form>
+</div>
