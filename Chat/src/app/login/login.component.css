@@ -59,7 +59,7 @@ body {
   font-size: 0.95em;
 }
 
-.login input[type="email"],
+.login input[type="text"],
 .login input[type="password"] {
   background: #fff;
   border-color: #bbb;
@@ -67,7 +67,7 @@ body {
 }
 
 /* Text fields' focus effect */
-.login input[type="email"]:focus,
+.login input[type="text"]:focus,
 .login input[type="password"]:focus {
   border-color: #888;
 }
