@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AccountService } from '../service/account.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [AccountService]
 })
 export class LoginComponent implements OnInit {
 
@@ -15,10 +17,12 @@ export class LoginComponent implements OnInit {
   email: string;
   isLogin = true;
   action = 'Login';
-  constructor(private route: ActivatedRoute, fb: FormBuilder, private http: HttpClient) {
+  loginRes: string;
+  constructor(private route: ActivatedRoute, private router: Router, fb: FormBuilder, private accountservice: AccountService) {
     this.baseForm = fb.group({
-      'UserName': [null, Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9]+')])],
-      'PassWord': [null, Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9]{8,15}')])]
+      'UserName': [null, Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9]+'), Validators.pattern['^[:punct:]']])],
+      'PassWord': [null, Validators.compose([Validators.required, Validators.pattern('[a-zA-Z0-9]{8,15}')])],
+      'showPwd': [false]
     });
   }
 
@@ -35,19 +39,26 @@ export class LoginComponent implements OnInit {
 
   submitForm(value: any): void {
     if (this.isLogin) {
-      console.log("登入驗證");
-      let headers = new HttpHeaders({
-        'content-Type': 'application/json',
-        Accept: '*'
-      });
 
-      this.http.post('http://10.10.52.64:8080/Login',
-        {
-          ID: this.baseForm.controls['UserName'].value,
-          PassWord: this.baseForm.controls['PassWord'].value
-        }, { headers }).subscribe((data) => { console.log('respones' + data); });
+      this.accountservice.Login(this.baseForm.controls['UserName'].value,
+        this.baseForm.controls['PassWord'].value).subscribe((data) => {
+          if (data['code'] !== '0') {
+            this.loginRes = data['message'];
+          } else {
+            this.router.navigate(['chat']);
+          }
+        });
+
     } else {
-      console.log("註冊寫DB");
+      this.accountservice.Register(this.baseForm.controls['UserName'].value,
+        this.baseForm.controls['PassWord'].value).subscribe((data) => {
+          if (data['code'] !== '0') {
+            this.loginRes = data['message'];
+          } else {
+            this.router.navigate(['chat']);
+          }
+        });
+
     }
   }
 

@@ -4,16 +4,26 @@
   <h2 class="login-header">{{action}}</h2>
 
   <form [formGroup]="baseForm" (ngSubmit)="submitForm(baseForm.value)" class="login-container">
-    <p><input type="text" placeholder="User" [formControl]="baseForm.controls['UserName']"></p>
-    <p>
-      <input type="password" placeholder="Password" [formControl]="baseForm.controls['PassWord']">
-      <i class="glyphicon glyphicon-eye-open form-control-feedback"></i>
-    </p>
+    <div>
+      <input type="text" placeholder="Id" [formControl]="baseForm.controls['UserName']">
+      <span *ngIf="baseForm.controls['UserName'].hasError('required') && baseForm.controls['UserName'].touched" class="alertmsg">請輸入此欄位</span><br>
+      <span *ngIf="baseForm.controls['UserName'].hasError('pattern') && baseForm.controls['UserName'].touched" class="alertmsg">不可含標點符號</span>
+    </div>
+
+    <div>
+      <input [type]="this.baseForm.controls['showPwd'].value?'text':'password'" placeholder="Password" [formControl]="baseForm.controls['PassWord']">
+      <span *ngIf="baseForm.controls['PassWord'].hasError('required') && baseForm.controls['PassWord'].touched" class="alertmsg">請輸入此欄位</span><br>
+      <span *ngIf="baseForm.controls['PassWord'].hasError('pattern') && baseForm.controls['PassWord'].touched" class="alertmsg">密碼長度需為8-15碼之間，且不可含標點符號</span>
+    </div>
+    <div><input type="checkbox" id="showPwd" value="showPwd" name="showPwd" [formControl]="baseForm.controls['showPwd']"><span id="showPwdText">顯示密碼</span></div>
     <ng-container *ngIf="isLogin;else register">
-      <p><input type="submit" value="Login" [disabled]="!baseForm.valid"></p>
+      <div><input type="submit" value="Login" [disabled]="!baseForm.valid"></div>
     </ng-container>
     <ng-template #register>
-      <p><input type="submit" value="Sign up" [disabled]="!baseForm.valid"></p>
+      <div><input  type="submit" value="Sign up" [disabled]="!baseForm.valid"></div>
     </ng-template>
+    <div *ngIf="this.loginRes">
+      <span [innerHTML]="this.loginRes" class="alertmsg"></span>
+    </div>
   </form>
 </div>

@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css);
 
 body {
   background: #456;
@@ -13,7 +14,7 @@ body {
 
 /* Reset top and bottom margins from certain elements */
 .login-header,
-.login p {
+.login div {
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -43,7 +44,7 @@ body {
 }
 
 /* Every row inside .login-container is defined with p tags */
-.login p {
+.login div {
   padding: 12px;
 }
 
@@ -79,6 +80,7 @@ body {
   cursor: pointer;
 }
 
+
 .login input[type="submit"]:hover {
   background: #17c;
 }
@@ -86,4 +88,30 @@ body {
 /* Buttons' focus effect */
 .login input[type="submit"]:focus {
   border-color: #05a;
+}
+
+.login input[type="submit"]:disabled {
+  background: #dddddd;
+  cursor: default;
+}
+
+.login #showPwd{
+  box-sizing: border-box;
+  display: block;
+  width: auto;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+}
+.login #showPwdText{
+  position: relative;
+  top: -1em;
+  left: 1.5em;
+}
+
+.login .alertmsg{
+  color: red;
 }
